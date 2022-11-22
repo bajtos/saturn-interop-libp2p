@@ -1,0 +1,19 @@
+{
+  "name": "saturn-interop-libp2p",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "pnpm": "^7.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
