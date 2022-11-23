@@ -13,6 +13,13 @@
   "engines": {
     "pnpm": "^7.1"
   },
+  "dependencies": {
+    "@chainsafe/libp2p-noise": "^10.1.0",
+    "@libp2p/mplex": "^7.0.1",
+    "@libp2p/tcp": "^6.0.3",
+    "libp2p": "^0.40.0",
+    "multiaddr": "^10.0.1"
+  },
   "devDependencies": {
     "prettier": "^2.7.1"
   }
