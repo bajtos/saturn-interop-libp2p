@@ -38,6 +38,11 @@ node.connectionManager.addEventListener('peer:connect', ({ detail: connection })
     tags: connection.tags,
     stat: connection.stat,
   })
+  setTimeout(async () => {
+    if (connection.stat.status !== 'OPEN') return
+    const latency = await node.ping(connection.remotePeer)
+    console.log('l2 node %s has latency %s', connection.remotePeer.toString(), latency)
+  }, 100)
 })
 
 node.connectionManager.addEventListener('peer:disconnect', ({ detail: connection }) => {
