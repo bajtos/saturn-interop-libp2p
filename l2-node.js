@@ -1,9 +1,8 @@
-import { defaultNodeConfig, createNode, ServerStateFile } from './lib/helpers.js'
+import { defaultNodeConfig, createNode } from './lib/helpers.js'
 import { multiaddr } from 'multiaddr'
-import { readFile } from 'node:fs/promises'
 
-const serverState = JSON.parse(await readFile(ServerStateFile, 'utf-8'))
-const serverAddress = serverState.addresses[0]
+const serverAddress =
+  '/dns/localhost/tcp/3000/p2p/12D3KooWR6RmLLNVoZd3csiqEMcWqsTydNayMEtYcbumZ9Febt7f'
 const l1node = multiaddr(serverAddress)
 
 const node = await createNode({

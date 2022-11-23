@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@chainsafe/libp2p-noise': ^10.1.0
   '@libp2p/mplex': ^7.0.1
+  '@libp2p/peer-id-factory': ^1.0.19
   '@libp2p/tcp': ^6.0.3
   libp2p: ^0.40.0
   multiaddr: ^10.0.1
@@ -11,6 +12,7 @@ specifiers:
 dependencies:
   '@chainsafe/libp2p-noise': 10.1.0
   '@libp2p/mplex': 7.0.1
+  '@libp2p/peer-id-factory': 1.0.19
   '@libp2p/tcp': 6.0.3
   libp2p: 0.40.0
   multiaddr: 10.0.1

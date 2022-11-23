@@ -1,10 +1,18 @@
-import { defaultNodeConfig, createNode, ServerStateFile } from './lib/helpers.js'
-import { writeFile, rm } from 'node:fs/promises'
+import { defaultNodeConfig, createNode } from './lib/helpers.js'
+import { createFromProtobuf } from '@libp2p/peer-id-factory'
+
+// FIXME: this should be provided via ENV vars
+const PeerIdString =
+  'CiYAJAgBEiDi/KnMUa/JNs6QMdbutR8dj+nN0dwg8m91QcHMPeYRDhIkCAESIOL8qcxRr8k2zpAx1u61Hx2P6c3R3CDyb3VBwcw95hEOGkQIARJAiiPvAQeLsqMRsUzYOk56jQ+kKawzy62jQIRSEgoQcQXi/KnMUa/JNs6QMdbutR8dj+nN0dwg8m91QcHMPeYRDg=='
+
+const peerId = await createFromProtobuf(Buffer.from(PeerIdString, 'base64'))
 
 const node = await createNode({
   ...defaultNodeConfig,
+  peerId,
   addresses: {
-    listen: ['/ip4/0.0.0.0/tcp/0'],
+    listen: ['/ip4/0.0.0.0/tcp/3000'],
+    announce: ['/dns/localhost/tcp/3000'],
   },
 })
 await node.start()
@@ -14,11 +22,6 @@ console.log('listening on addresses:')
 node.getMultiaddrs().forEach((addr) => {
   console.log('  ', addr.toString())
 })
-
-writeFile(
-  ServerStateFile,
-  JSON.stringify({ addresses: node.getMultiaddrs().map((addr) => addr.toString()) }),
-)
 
 process.on('SIGINT', () => {
   shutdown().then(
@@ -42,6 +45,5 @@ node.connectionManager.addEventListener('peer:disconnect', ({ detail: connection
 })
 
 async function shutdown() {
-  await rm(ServerStateFile)
   await node.stop()
 }
