@@ -1,5 +1,6 @@
-import { defaultNodeConfig, createNode } from './lib/helpers.js'
+import { defaultNodeConfig, createNode, readStreamToBuffer } from './lib/helpers.js'
 import { createFromProtobuf } from '@libp2p/peer-id-factory'
+import { randomUUID } from 'node:crypto'
 
 // FIXME: this should be provided via ENV vars
 const PeerIdString =
@@ -40,8 +41,19 @@ node.connectionManager.addEventListener('peer:connect', ({ detail: connection })
   })
   setTimeout(async () => {
     if (connection.stat.status !== 'OPEN') return
-    const latency = await node.ping(connection.remotePeer)
-    console.log('l2 node %s has latency %s', connection.remotePeer.toString(), latency)
+
+    const stream = await node.dialProtocol(connection.remotePeer, '/saturn:get-content/0.1.0')
+    const req = {
+      requestId: randomUUID(),
+      // cid: 'bafybeigj5lcgh3zm4mdiyherixy7q6n4k5idj3jetetxfjwhbbuqyksyem',
+      cid: 'bafybeib36krhffuh3cupjml4re2wfxldredkir5wti3dttulyemre7xkni',
+    }
+    console.log('Fetching', req.cid)
+    await stream.sink([Buffer.from(JSON.stringify(req))])
+
+    const res = await readStreamToBuffer(stream.source)
+    console.log('==RESPONSE==\n%s', res.toString())
+    console.log('==EOF==')
   }, 100)
 })
 

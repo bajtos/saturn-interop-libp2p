@@ -29,3 +29,15 @@ The string output can be unmarshalled back into a peer id using the following co
 ```js
 await createFromProtobuf(Buffer.from(peerIdString, 'base64'))
 ```
+
+## TODO
+
+- [ ] Add HTTP GW-like API to L1 node
+
+- [ ] Rework L1 to keep a swarm of L2 nodes
+
+- [ ] Forward HTTP response headers from L2 node, or at least content type
+
+- [ ] Deploy L1 node to Fly.io via Docker:
+  - https://fly.io/docs/languages-and-frameworks/node/
+  - https://fly.io/docs/app-guides/udp-and-tcp/

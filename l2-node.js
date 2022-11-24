@@ -1,4 +1,4 @@
-import { defaultNodeConfig, createNode } from './lib/helpers.js'
+import { defaultNodeConfig, createNode, readStreamToBuffer } from './lib/helpers.js'
 import { multiaddr } from 'multiaddr'
 
 const serverAddress =
@@ -22,10 +22,26 @@ if (node.getMultiaddrs().length < 1) {
   console.log('   (none)')
 }
 
-setInterval(ping, 500).unref()
+node.handle('/saturn:get-content/0.1.0', async ({ stream, connection }) => {
+  const req = JSON.parse(await readStreamToBuffer(stream.source))
+  console.log('Received request:', req)
+
+  const gwUrl = `https://ipfs.io/ipfs/${req.cid}`
+  console.log('fetching', gwUrl)
+  const res = await fetch(gwUrl)
+  console.log('GW response:', res.status)
+  // TODO: handle errors
+
+  for await (const chunk of res.body) {
+    stream.sink([chunk])
+  }
+
+  stream.close()
+})
+
+setInterval(ping, 1000).unref()
 
 async function ping() {
-  console.log(`pinging remote peer at ${serverAddress}`)
   const latency = await node.ping(l1node)
   console.log(`pinged ${l1node} in ${latency}ms`)
 }
