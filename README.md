@@ -32,6 +32,8 @@ await createFromProtobuf(Buffer.from(peerIdString, 'base64'))
 
 ## TODO
 
+- [ ] Benchmark performance of large file transfer: HTTP vs libp2p
+
 - [ ] Add HTTP GW-like API to L1 node
 
 - [ ] Rework L1 to keep a swarm of L2 nodes
