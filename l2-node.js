@@ -1,5 +1,5 @@
 import { defaultNodeConfig, createNode, readStreamToBuffer } from './lib/helpers.js'
-import { multiaddr } from 'multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 
 const serverAddress =
   '/dns/localhost/tcp/3000/p2p/12D3KooWR6RmLLNVoZd3csiqEMcWqsTydNayMEtYcbumZ9Febt7f'
