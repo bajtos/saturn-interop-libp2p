@@ -14,14 +14,14 @@
     "pnpm": "^7.1"
   },
   "dependencies": {
-    "@chainsafe/libp2p-noise": "^10.1.0",
-    "@libp2p/mplex": "^7.0.1",
+    "@chainsafe/libp2p-noise": "^10.2.0",
+    "@libp2p/mplex": "^7.1.0",
     "@libp2p/peer-id-factory": "^1.0.19",
-    "@libp2p/tcp": "^6.0.3",
+    "@libp2p/tcp": "^6.0.4",
     "@multiformats/multiaddr": "^11.0.7",
     "libp2p": "^0.40.0"
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "prettier": "^2.8.0"
   }
 }
