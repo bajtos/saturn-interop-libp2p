@@ -1,4 +1,9 @@
-import { defaultNodeConfig, createNode, readStreamToBuffer } from './lib/helpers.js'
+import {
+  defaultNodeConfig,
+  createNode,
+  readStreamToBuffer,
+  SaturnProtocols,
+} from './lib/helpers.js'
 import { multiaddr } from '@multiformats/multiaddr'
 
 const serverAddress =
@@ -22,7 +27,7 @@ if (node.getMultiaddrs().length < 1) {
   console.log('   (none)')
 }
 
-node.handle('/saturn:get-content/0.1.0', async ({ stream, connection }) => {
+node.handle(SaturnProtocols.GetContent, async ({ stream, connection }) => {
   const req = JSON.parse(await readStreamToBuffer(stream.source))
   console.log('Received request:', req)
 
@@ -32,9 +37,7 @@ node.handle('/saturn:get-content/0.1.0', async ({ stream, connection }) => {
   console.log('GW response:', res.status)
   // TODO: handle errors
 
-  for await (const chunk of res.body) {
-    stream.sink([chunk])
-  }
+  await stream.sink(res.body)
 
   stream.close()
 })

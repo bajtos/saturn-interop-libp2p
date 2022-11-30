@@ -2,6 +2,21 @@
 
 A proof of concept for using libp2p as the communication channel between Saturn L1 and L2 nodes
 
+## Setup
+
+Create TLS private key and certificate for the HTTPS server.
+
+```bash
+$ openssl req -nodes -new -x509 -keyout bench/.cache/server.key -out bench/.cache/server.cert
+
+openssl genrsa -out bench/.cache/server-key.pem 2048
+openssl req -new -sha256 -key bench/.cache/server-key.pem -out bench/.cache/server-csr.pem
+openssl x509 -req -in bench/.cache/server-csr.pem -signkey bench/.cache/server-key.pem -out bench/.cache/server-cert.pem
+rm bench/.cache/server-csr.pem
+```
+
+Remember to set the `Common Name` to `localhost`.
+
 ## Basic use
 
 In terminal 1, start the L1 node:

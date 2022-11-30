@@ -1,4 +1,9 @@
-import { defaultNodeConfig, createNode, readStreamToBuffer } from './lib/helpers.js'
+import {
+  defaultNodeConfig,
+  createNode,
+  readStreamToBuffer,
+  SaturnProtocols,
+} from './lib/helpers.js'
 import { createFromProtobuf } from '@libp2p/peer-id-factory'
 import { randomUUID } from 'node:crypto'
 
@@ -42,7 +47,7 @@ node.connectionManager.addEventListener('peer:connect', ({ detail: connection })
   setTimeout(async () => {
     if (connection.stat.status !== 'OPEN') return
 
-    const stream = await node.dialProtocol(connection.remotePeer, '/saturn:get-content/0.1.0')
+    const stream = await node.dialProtocol(connection.remotePeer, SaturnProtocols.GetContent)
     const req = {
       requestId: randomUUID(),
       // cid: 'bafybeigj5lcgh3zm4mdiyherixy7q6n4k5idj3jetetxfjwhbbuqyksyem',
