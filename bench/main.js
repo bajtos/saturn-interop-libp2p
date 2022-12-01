@@ -6,6 +6,15 @@ import fs from 'node:fs/promises'
 import { Client } from 'undici'
 import { createNode, defaultNodeConfig, SaturnProtocols } from '../lib/helpers.js'
 import { getCacheLocationForCid, resolveImportRelative } from './helpers.js'
+// import { createEd25519PeerId} from '@libp2p/peer-id-factory'
+import { createRSAPeerId } from '@libp2p/peer-id-factory'
+
+// Create RSA peer id and check if it has better performance
+// Ed25519 is implemented in JS and has very low performance.
+// See https://github.com/libp2p/js-libp2p-crypto/issues/288
+// const peerId = await createEd25519PeerId()
+const peerId = await createRSAPeerId()
+console.log('L1 peer id:', peerId.type, peerId.toString())
 
 // A ~1.2GB directory from Project Apollo Archives
 const LargeContentCid = 'QmTARpLZ6D4PerQ5LGZM4C9LdKBpTNZBR8gZebEyNZxvz1'
@@ -34,6 +43,7 @@ try {
 // Create our L1 node
 const node = await createNode({
   ...defaultNodeConfig,
+  peerId,
   addresses: {
     listen: ['/ip4/127.0.0.1/tcp/3000'],
   },
