@@ -67,7 +67,7 @@ packages:
     resolution: {integrity: sha512-nXw09UwSE5JCiB5Dte6j0b0Qe+KbtepJvaPz/f5JyxcoyUfLE/t7XWRZAZmcuWBeVWWpOItnK5WmW8uocoiwCQ==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
-      '@libp2p/crypto': 1.0.7
+      '@libp2p/crypto': 1.0.9
       '@libp2p/interface-connection-encrypter': 3.0.2
       '@libp2p/interface-keys': 1.0.4
       '@libp2p/interface-metrics': 4.0.2
@@ -104,8 +104,8 @@ packages:
       - supports-color
     dev: false
 
-  /@libp2p/crypto/1.0.7:
-    resolution: {integrity: sha512-rJdM0cfoN+DYurcCjiz4LnOkH1fbMHXlC/UggRYvRlQP6c6U/Pd0qbtpZ1blrjQ3lmDnXeh9AM+4Ys0DMU88cw==}
+  /@libp2p/crypto/1.0.9:
+    resolution: {integrity: sha512-7jL6dVhwNTKsmFrB8D+36CRhEner/d/LaJDofCb/FsH5EeY06imkuIlu5Z3WoJv9kF803S45mzfPw+Cpqkp6Zw==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       '@libp2p/interface-keys': 1.0.4
@@ -388,7 +388,7 @@ packages:
     resolution: {integrity: sha512-L38Ee6r32A+AlfnEd9mO+OZgVamN7oQXS7DQ3GudY0twXBf5QslggJo2jRFZ0hoo2FiT+SUXhiOnqItrTLoD4g==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
-      '@libp2p/crypto': 1.0.7
+      '@libp2p/crypto': 1.0.9
       '@libp2p/interface-keys': 1.0.4
       '@libp2p/interface-peer-id': 1.0.6
       '@libp2p/peer-id': 1.1.16
@@ -412,7 +412,7 @@ packages:
     resolution: {integrity: sha512-HV4cp8vQHt06gmhoXHf1aVbwE/145DCqRmtURkd+C75t3y+RNxDf/tlxMo/bwse3HxWNpjN8uUYP48Z++GWmqA==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
-      '@libp2p/crypto': 1.0.7
+      '@libp2p/crypto': 1.0.9
       '@libp2p/interface-peer-id': 1.0.6
       '@libp2p/interface-record': 2.0.2
       '@libp2p/logger': 2.0.2
@@ -684,8 +684,8 @@ packages:
       '@stablelib/wipe': 1.0.1
     dev: false
 
-  /@types/node/18.11.9:
-    resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
+  /@types/node/18.11.10:
+    resolution: {integrity: sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==}
     dev: false
 
   /@types/retry/0.12.1:
@@ -1068,7 +1068,7 @@ packages:
     dependencies:
       '@achingbrain/nat-port-mapper': 1.0.7
       '@libp2p/connection': 4.0.2
-      '@libp2p/crypto': 1.0.7
+      '@libp2p/crypto': 1.0.9
       '@libp2p/interface-address-manager': 2.0.1
       '@libp2p/interface-connection': 3.0.3
       '@libp2p/interface-connection-encrypter': 3.0.2
@@ -1344,7 +1344,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 18.11.9
+      '@types/node': 18.11.10
       long: 5.2.1
     dev: false
 

@@ -9,7 +9,7 @@ import { randomUUID } from 'node:crypto'
 
 // FIXME: this should be provided via ENV vars
 const PeerIdString =
-  'CiYAJAgBEiDi/KnMUa/JNs6QMdbutR8dj+nN0dwg8m91QcHMPeYRDhIkCAESIOL8qcxRr8k2zpAx1u61Hx2P6c3R3CDyb3VBwcw95hEOGkQIARJAiiPvAQeLsqMRsUzYOk56jQ+kKawzy62jQIRSEgoQcQXi/KnMUa/JNs6QMdbutR8dj+nN0dwg8m91QcHMPeYRDg=='
+  'CiYAJAgBEiDluNfV2GAg/vDcFs8wNmBR4vs8cSr2vd9iGdTki+H6YxIkCAESIOW419XYYCD+8NwWzzA2YFHi+zxxKva932IZ1OSL4fpjGkQIARJA+PpMIiIRRZKRK/7rT4eZKmJpqpZEu2wHFtQcYMnuP0/luNfV2GAg/vDcFs8wNmBR4vs8cSr2vd9iGdTki+H6Yw=='
 
 const peerId = await createFromProtobuf(Buffer.from(PeerIdString, 'base64'))
 
