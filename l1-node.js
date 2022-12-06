@@ -1,11 +1,8 @@
-import {
-  defaultNodeConfig,
-  createNode,
-  readStreamToBuffer,
-  SaturnProtocols,
-} from './lib/helpers.js'
 import { createFromProtobuf } from '@libp2p/peer-id-factory'
 import { randomUUID } from 'node:crypto'
+import { once } from 'node:events'
+import http from 'node:http'
+import { createNode, defaultNodeConfig, SaturnProtocols } from './lib/helpers.js'
 
 // FIXME: this should be provided via ENV vars
 const PeerIdString =
@@ -17,55 +14,91 @@ const node = await createNode({
   ...defaultNodeConfig,
   peerId,
   addresses: {
-    listen: ['/ip4/0.0.0.0/tcp/3000'],
-    announce: ['/dns/localhost/tcp/3000'],
+    listen: ['/ip4/127.0.0.1/tcp/5000'],
   },
 })
 await node.start()
 
 // print out listening addresses
-console.log('listening on addresses:')
+console.log('libp2p listening on addresses:')
 node.getMultiaddrs().forEach((addr) => {
   console.log('  ', addr.toString())
 })
 
-process.on('SIGINT', () => {
-  shutdown().then(
-    (ok) => console.log('libp2p has stopped'),
-    (err) => console.error('Cannot stop libp2p node:', err),
-  )
+const server = http.createServer(async (req, res) => {
+  handle().catch((err) => {
+    console.log('Unhandled error for %s %s:', req.method, req.path, err)
+    replyError(500, err.message || err)
+  })
+
+  async function handle() {
+    const cid = req.url.slice(1) // remove the leading '/' character
+    // console.log('Serving CID', cid)
+
+    if (req.method !== 'GET') {
+      return replyError(405, `Method ${req.method} is not allowed.`)
+    }
+
+    if (!cid) {
+      return replyError(404, `Not found: ${req.url} Missing CID in the requested path`)
+    }
+
+    const peers = node.getConnections()
+    if (!peers.length) {
+      return replyError(500, 'No L2 nodes are connected.')
+    }
+
+    // TODO: use consistent hashing to select the L2 Node to ask for the content
+    const targetPeer = peers[0].remotePeer
+
+    const stream = await node.dialProtocol(targetPeer, SaturnProtocols.GetContent)
+    const saturnReq = {
+      requestId: randomUUID(),
+      cid,
+    }
+    // console.log('Saturn content request', saturnReq)
+    await stream.sink([Buffer.from(JSON.stringify(saturnReq))])
+    // console.log('Streaming back the response')
+
+    res.writeHead(200)
+    for await (const chunk of stream.source) {
+      res.write(chunk.subarray())
+    }
+    res.end()
+  }
+
+  function replyError(statusCode, msg) {
+    res.writeHead(statusCode, { 'content-type': 'text/plain' })
+    res.write(msg + '\n')
+    res.end()
+  }
 })
+server.listen(3000, '127.0.0.1')
+await once(server, 'listening')
+const url = `http://127.0.0.1:${server.address().port}/`
+console.log('HTTP server listening on %s', url)
+console.log(
+  'Example requests:\n  %s%s\n  %s%s',
+  url,
+  'bafybeib36krhffuh3cupjml4re2wfxldredkir5wti3dttulyemre7xkni',
+  url,
+  'bafybeigj5lcgh3zm4mdiyherixy7q6n4k5idj3jetetxfjwhbbuqyksyem',
+)
 
 node.connectionManager.addEventListener('peer:connect', ({ detail: connection }) => {
-  console.log('new connection', {
-    id: connection.id,
-    remoteAddr: connection.remoteAddr,
-    remotePeer: connection.remotePeer.toString(),
-    tags: connection.tags,
-    stat: connection.stat,
-  })
-  setTimeout(async () => {
-    if (connection.stat.status !== 'OPEN') return
-
-    const stream = await node.dialProtocol(connection.remotePeer, SaturnProtocols.GetContent)
-    const req = {
-      requestId: randomUUID(),
-      // cid: 'bafybeigj5lcgh3zm4mdiyherixy7q6n4k5idj3jetetxfjwhbbuqyksyem',
-      cid: 'bafybeib36krhffuh3cupjml4re2wfxldredkir5wti3dttulyemre7xkni',
-    }
-    console.log('Fetching', req.cid)
-    await stream.sink([Buffer.from(JSON.stringify(req))])
-
-    const res = await readStreamToBuffer(stream.source)
-    console.log('==RESPONSE==\n%s', res.toString())
-    console.log('==EOF==')
-  }, 100)
+  console.log('L2 Node connected', connection.remotePeer.toString())
 })
 
 node.connectionManager.addEventListener('peer:disconnect', ({ detail: connection }) => {
-  console.log('disconnected:', connection.id)
+  console.log('L2 Node disconnected', connection.remotePeer.toString())
+})
+
+process.on('SIGINT', () => {
+  shutdown().catch((err) => console.error('Cannot shut down:', err))
 })
 
 async function shutdown() {
   await node.stop()
+  server.close()
+  await once(server, 'close')
 }

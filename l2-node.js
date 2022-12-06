@@ -7,7 +7,7 @@ import {
 import { multiaddr } from '@multiformats/multiaddr'
 
 const serverAddress =
-  '/dns/localhost/tcp/3000/p2p/12D3KooWRH71QRJe5vrMp6zZXoH4K7z5MDSWwTXXPriG9dK8HQXk'
+  '/ip4/127.0.0.1/tcp/5000/p2p/12D3KooWRH71QRJe5vrMp6zZXoH4K7z5MDSWwTXXPriG9dK8HQXk'
 const l1node = multiaddr(serverAddress)
 
 const node = await createNode({
@@ -32,7 +32,7 @@ node.handle(SaturnProtocols.GetContent, async ({ stream, connection }) => {
   console.log('Received request:', req)
 
   const gwUrl = `https://ipfs.io/ipfs/${req.cid}`
-  console.log('fetching', gwUrl)
+  console.log('Fetching', gwUrl)
   const res = await fetch(gwUrl)
   console.log('GW response:', res.status)
   // TODO: handle errors
@@ -42,12 +42,11 @@ node.handle(SaturnProtocols.GetContent, async ({ stream, connection }) => {
   stream.close()
 })
 
-setInterval(ping, 1000).unref()
+console.log('Connecting to L1 node %s', l1node)
+await node.dial(l1node)
+console.log('Ready to serve')
 
-async function ping() {
-  const latency = await node.ping(l1node)
-  console.log(`pinged ${l1node} in ${latency}ms`)
-}
+setInterval(() => node.ping(l1node), 200).unref()
 
 process.on('SIGINT', () => {
   // stop libp2p
