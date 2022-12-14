@@ -84,6 +84,7 @@ ${peers.length ? peers.map((p) => `<p><code>${p.remotePeer}</code>`) : '<p>(none
       res.write(chunk.subarray())
     }
     res.end()
+    stream.close()
     console.log('Done.')
   }
 

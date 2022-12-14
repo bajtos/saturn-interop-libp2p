@@ -7,8 +7,8 @@ import {
 import { multiaddr } from '@multiformats/multiaddr'
 
 const serverAddress =
-  '/ip4/127.0.0.1/tcp/3030/p2p/12D3KooWRH71QRJe5vrMp6zZXoH4K7z5MDSWwTXXPriG9dK8HQXk'
-//   '/dns/saturn-link-poc.fly.dev/tcp/3030/p2p/12D3KooWRH71QRJe5vrMp6zZXoH4K7z5MDSWwTXXPriG9dK8HQXk'
+  // '/ip4/127.0.0.1/tcp/3030/p2p/12D3KooWRH71QRJe5vrMp6zZXoH4K7z5MDSWwTXXPriG9dK8HQXk'
+  '/dns/saturn-link-poc.fly.dev/tcp/3030/p2p/12D3KooWRH71QRJe5vrMp6zZXoH4K7z5MDSWwTXXPriG9dK8HQXk'
 
 const l1node = multiaddr(serverAddress)
 
