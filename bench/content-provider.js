@@ -1,4 +1,4 @@
-import { createRSAPeerId } from '@libp2p/peer-id-factory'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { multiaddr } from '@multiformats/multiaddr'
 import { once } from 'node:events'
 import fs from 'node:fs'
@@ -11,9 +11,6 @@ import {
 } from '../lib/helpers.js'
 import { CacheDir, getCacheLocationForCid } from './helpers.js'
 
-const peerId = await createRSAPeerId()
-console.log('L2 peer id:', peerId.type, peerId.toString())
-
 const remoteAddressString = process.env.REMOTE_ADDRESS
 if (!remoteAddressString) {
   console.error('The environment variable REMOTE_ADDRESS must be set to multiaddr of the L1 node')
@@ -24,7 +21,6 @@ const remoteAddress = multiaddr(remoteAddressString)
 
 const node = await createNode({
   ...defaultNodeConfig,
-  peerId,
   addresses: {
     // no address - we are not dialable
   },
