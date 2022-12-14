@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "l1-node.js",
   "scripts": {
+    "start": "node l1-node.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "engines": {
+    "node": "18.x",
     "pnpm": "^7.1"
   },
   "dependencies": {
