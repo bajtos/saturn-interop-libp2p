@@ -50,10 +50,13 @@ console.log('Ready to serve')
 
 setInterval(() => node.ping(l1node), 200).unref()
 
+/*
 process.on('SIGINT', () => {
+  console.log('Stopping...')
   // stop libp2p
   node.stop().then(
     (ok) => console.log('libp2p has stopped'),
     (err) => console.error('Cannot stop libp2p node:', err),
   )
 })
+*/
