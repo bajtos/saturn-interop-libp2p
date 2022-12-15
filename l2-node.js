@@ -20,13 +20,15 @@ const node = await createNode({
 })
 await node.start()
 
+console.log('My peerId:\n  %s', node.peerId)
+
 // print out listening addresses
 console.log('listening on addresses:')
 node.getMultiaddrs().forEach((addr) => {
   console.log('  ', addr.toString())
 })
 if (node.getMultiaddrs().length < 1) {
-  console.log('   (none)')
+  console.log('  (none)')
 }
 
 node.handle(SaturnProtocols.GetContent, async ({ stream, connection }) => {
