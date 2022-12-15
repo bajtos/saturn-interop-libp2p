@@ -2,34 +2,23 @@
 
 A proof of concept for using libp2p as the communication channel between Saturn L1 and L2 nodes
 
-## Setup
-
-Create TLS private key and certificate for the HTTPS server.
-
-```bash
-$ openssl req -nodes -new -x509 -keyout bench/.cache/server.key -out bench/.cache/server.cert
-
-openssl genrsa -out bench/.cache/server-key.pem 2048
-openssl req -new -sha256 -key bench/.cache/server-key.pem -out bench/.cache/server-csr.pem
-openssl x509 -req -in bench/.cache/server-csr.pem -signkey bench/.cache/server-key.pem -out bench/.cache/server-cert.pem
-rm bench/.cache/server-csr.pem
-```
-
-Remember to set the `Common Name` to `localhost`.
-
 ## Basic use
 
-In terminal 1, start the L1 node:
+1. The L1 node is deployed to Fly.io. Open the following URL in your browser.
 
-```shell
-$ node l1-node.js
-```
+   [https://saturn-link-poc.fly.dev](https://saturn-link-poc.fly.dev)
 
-In terminal 2, start the L2 node:
+   The page should show an empty list of nodes.
 
-```shell
-$ node l2-node.js
-```
+2. In your terminal, start the L2 node:
+
+   ```shell
+   $ node l2-node.js
+   ```
+
+3. Return back to the website. Check that your L2 node is listed on the page.
+
+4. Open one of the example links or create your own using your favourite CID.
 
 ## Generating a new peer id
 
@@ -45,16 +34,27 @@ The string output can be unmarshalled back into a peer id using the following co
 await createFromProtobuf(Buffer.from(peerIdString, 'base64'))
 ```
 
-## TODO
+## Benchmarking
 
-- [ ] Benchmark performance of large file transfer: HTTP vs libp2p
+### Setup
 
-- [ ] Add HTTP GW-like API to L1 node
+Create TLS private key and certificate for the HTTPS server.
 
-- [ ] Rework L1 to keep a swarm of L2 nodes
+```bash
+$ openssl req -nodes -new -x509 -keyout bench/.cache/server.key -out bench/.cache/server.cert
 
-- [ ] Forward HTTP response headers from L2 node, or at least content type
+openssl genrsa -out bench/.cache/server-key.pem 2048
+openssl req -new -sha256 -key bench/.cache/server-key.pem -out bench/.cache/server-csr.pem
+openssl x509 -req -in bench/.cache/server-csr.pem -signkey bench/.cache/server-key.pem -out bench/.cache/server-cert.pem
+rm bench/.cache/server-csr.pem
+```
 
-- [ ] Deploy L1 node to Fly.io via Docker:
-  - https://fly.io/docs/languages-and-frameworks/node/
-  - https://fly.io/docs/app-guides/udp-and-tcp/
+Remember to set the `Common Name` to `localhost`.
+
+### Execution
+
+Run the following command to compare the performance of libp2p (TCP+noise) vs HTTPS.
+
+```shell
+$ node bench/main.js
+```
