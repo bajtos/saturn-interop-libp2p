@@ -32,25 +32,32 @@ if (node.getMultiaddrs().length < 1) {
 }
 
 node.handle(SaturnProtocols.GetContent, async ({ stream, connection }) => {
-  const req = JSON.parse(await readStreamToBuffer(stream.source))
-  console.log('Received request:', req)
+  try {
+    const req = JSON.parse(await readStreamToBuffer(stream.source))
+    console.log('Received request:', req)
 
-  const gwUrl = `https://ipfs.io/ipfs/${req.cid}`
-  console.log('Fetching', gwUrl)
-  const res = await fetch(gwUrl)
-  console.log('GW response:', res.status)
-  // TODO: handle errors
+    const gwUrl = `https://ipfs.io/ipfs/${req.cid}`
+    console.log('Fetching', gwUrl)
+    const res = await fetch(gwUrl)
+    console.log('GW response:', res.status)
+    // TODO: handle errors
 
-  await stream.sink(res.body)
-
-  stream.close()
+    await stream.sink(res.body)
+  } catch (err) {
+    console.log('Cannot handle incoming request.', err)
+  } finally {
+    stream.close()
+  }
 })
 
 console.log('Connecting to L1 node %s', l1node)
 await node.dial(l1node)
 console.log('Ready to serve')
 
-setInterval(() => node.ping(l1node), 200).unref()
+setInterval(
+  () => node.ping(l1node).catch((err) => console.error('L1 ping failed.', err)),
+  200,
+).unref()
 
 /*
 process.on('SIGINT', () => {
