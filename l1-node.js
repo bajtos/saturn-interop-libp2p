@@ -20,6 +20,10 @@ const node = await createNode({
     listen: ['/ip4/0.0.0.0/tcp/3030'],
     announce: publicHostname && [`/dns/${publicHostname}/tcp/3030/p2p/${peerId}`],
   },
+  ping: {
+    maxInboundStreams: 2,
+    maxOutboundStreams: 2,
+  },
 })
 await node.start()
 
