@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "@chainsafe/libp2p-noise": "^10.2.0",
-    "@libp2p/mplex": "^7.1.0",
-    "@libp2p/peer-id-factory": "^1.0.19",
-    "@libp2p/tcp": "^6.0.4",
-    "@multiformats/multiaddr": "^11.0.7",
+    "@libp2p/mplex": "^7.1.1",
+    "@libp2p/peer-id-factory": "^1.0.20",
+    "@libp2p/tcp": "^6.1.2",
+    "@multiformats/multiaddr": "^11.4.0",
     "libp2p": "^0.40.0",
-    "undici": "^5.13.0"
+    "undici": "^5.20.0"
   },
   "devDependencies": {
-    "prettier": "^2.8.0"
+    "prettier": "^2.8.4"
   }
 }
